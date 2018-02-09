@@ -18,6 +18,10 @@ var imgStr = ["map", "platf", "smplat", "player","bar"];
 var smPlat = images[2]
 var map = {img:null, x:0, y:0, width:2000, height:canvas.height};
 var player = {img:null, x:-150, y:canvas.height-132, jumping:false, xvel:0, yvel:0};
+var playerSprite = 0; 
+var maxSprites = 4;
+var spriteCtr = 0;
+var framesPerSprite = 6;
 var lgPlat = {img:null, x:-150, y:canvas.height-64, width:2000, height:60};
 var bar ={img:null, x:150, y:canvas.height-50, width:20, height:20};
 var uInt;
@@ -44,6 +48,8 @@ function update()
 {
 	movePlayer();
 	fillMeter();
+	checkCollision();
+	animatePlayer();
 	render(); 
 	//console.log()
 }
@@ -87,9 +93,23 @@ player.x += player.xvel;
 player.y += player.yvel;
 player.xvel *= 0.9;
 player.yvel *= 0.9;
-checkCollision();
+
 }
 
+function animatePlayer()
+{
+if(rightPressed ==true|| leftPressed == true)
+{	
+	spriteCtr++;
+	if (spriteCtr == framesPerSprite)
+	{
+		spriteCtr = 0;
+		playerSprite++;
+		if (playerSprite == maxSprites)
+			playerSprite = 0;
+	}
+}
+}
 function onKeyDown(event)
 {
 	switch (event.keyCode)
@@ -150,8 +170,7 @@ function render()
 	surface.drawImage(map.img, map.x, map.y, map.width, map.height);
 	surface.drawImage(lgPlat.img, lgPlat.x, lgPlat.y, lgPlat.width, lgPlat.height);
 	surface.drawImage(bar.img, bar.x, bar.y, bar.width, bar.height);
-	surface.drawImage(player.img,
-					  0, 0, 64, 64, player.x, player.y, 64, 64);
+	surface.drawImage(player.img,64*playerSprite, 0, 64, 64,player.x, player.y, 64, 64);
 }
 function checkCollision()
 {
