@@ -46,11 +46,6 @@ function update()
 	fillMeter();
 	render(); 
 	//console.log()
-	player.x += player.xvel;
-	player.y += player.yvel;
-	player.xvel *= 0.9;// friction
-	player.yvel *= 0.9;// friction
-	checkCollision();
 }
 
 function movePlayer()
@@ -72,7 +67,7 @@ function movePlayer()
 		{
 			player.xvel += 1.5;
 		}
-			else if(rightPressed == true &&(map.x + map.width) != 640)
+			else if(rightPressed == true &&(map.x + map.width) != 640)//need to combo move physics with map.x
 			{
 				map.x -= playerSpeed;
 				
@@ -87,7 +82,12 @@ function movePlayer()
 	player.yvel -= 40;
 	bar.width = oldBW - mtrEtr;
 	}
-	
+//movement physics
+player.x += player.xvel;
+player.y += player.yvel;
+player.xvel *= 0.9;
+player.yvel *= 0.9;
+checkCollision();
 }
 
 function onKeyDown(event)
